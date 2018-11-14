@@ -1,0 +1,9 @@
+---
+name: cis-ubuntu16.04lts-level2-server
+title: CIS Ubuntu Linux 16.04 LTS Benchmark Level 2 - Server
+summary: CIS Ubuntu Linux 16.04 LTS Benchmark Level 2 - Server translated from SCAP
+version: 1.0.0
+maintainer: Chef Software, Inc.
+copyright: Chef Software, Inc.
+copyright_email: support@chef.io
+license: Proprietary, All rights reserved

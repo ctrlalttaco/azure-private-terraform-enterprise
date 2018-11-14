@@ -1,0 +1,64 @@
+{
+  "min_packer_version": "0.12.0",
+  "variables": {
+    "subscription_id": "{{env `ARM_SUBSCRIPTION_ID`}}",
+    "tenant_id": "{{env `ARM_TENANT_ID`}}",
+    "client_id": "{{env `ARM_CLIENT_ID`}}",
+    "client_secret": "{{env `ARM_CLIENT_SECRET`}}",
+    "azure_location": "{{env `ARM_LOCATION`}}",
+    "resource_group_name": "{{env `ARM_RESOURCE_GROUP`}}"
+  },
+  "builders": [
+    {
+      "type": "azure-arm",
+      "subscription_id": "{{user `subscription_id`}}",
+      "tenant_id": "{{user `tenant_id`}}",
+      "client_id": "{{user `client_id`}}",
+      "client_secret": "{{user `client_secret`}}",
+      "managed_image_name": "terraform-enterprise-ubuntu1604-{{isotime \"2006-01-02-150405\"}}",
+      "managed_image_resource_group_name": "{{user `resource_group_name`}}",
+      "os_type": "Linux",
+      "os_disk_size_gb": "64",
+      "image_publisher": "Canonical",
+      "image_offer": "UbuntuServer",
+      "image_sku": "16.04-LTS",
+      "location": "{{user `azure_location`}}",
+      "vm_size": "Standard_DS2_v2"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/docker.sh",
+        "scripts/postgres-client.sh",
+        "scripts/ansible.sh"
+      ],
+      "inline_shebang": "/bin/sh -x"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "ansible/default.yml",
+      "role_paths": ["ansible/roles/security-os-ubuntu-16"],
+      "clean_staging_directory": true
+    },
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "inline": "reboot",
+      "inline_shebang": "/bin/sh -x",
+      "expect_disconnect": true
+    },
+    {
+      "type": "shell",
+      "execute_command": "chmod +x {{ .Path }}; {{ .Vars }} sudo -E sh '{{ .Path }}'",
+      "inline": [
+        "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
+      ],
+      "inline_shebang": "/bin/sh -x",
+      "pause_before": "30s"
+    }
+  ]
+}

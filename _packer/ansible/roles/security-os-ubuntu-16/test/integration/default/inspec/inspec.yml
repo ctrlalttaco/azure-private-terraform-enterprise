@@ -1,0 +1,5 @@
+---
+name: default-inspec
+depends:
+  - name: cis-ubuntu16.04lts-level2-server
+    path: test/inspec/cis-ubuntu16.04lts-level2-server

@@ -1,0 +1,7 @@
+#
+# /etc/pam.d/common-auth - authentication settings common to all services
+#
+
+auth	[success=1 default=ignore]	pam_unix.so nullok_secure
+auth  requisite										pam_deny.so
+auth  required										pam_permit.so

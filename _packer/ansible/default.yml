@@ -1,0 +1,6 @@
+---
+- name: wrapper playbook for "security-os-ubuntu-16"
+  hosts: localhost
+  become: yes
+  roles:
+    - security-os-ubuntu-16

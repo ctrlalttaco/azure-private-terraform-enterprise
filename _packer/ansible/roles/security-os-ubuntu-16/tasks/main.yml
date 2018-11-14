@@ -1,0 +1,20 @@
+---
+- include_tasks: prelim.yml
+
+- include_tasks: section1.yml
+  when: ubu16gsa_section1
+
+- include_tasks: section2.yml
+  when: ubu16gsa_section2
+
+- include_tasks: section3.yml
+  when: ubu16gsa_section3
+
+- include_tasks: section4.yml
+  when: ubu16gsa_section4
+
+- include_tasks: section5.yml
+  when: ubu16gsa_section5
+  
+- include_tasks: section6.yml
+  when: ubu16gsa_section6

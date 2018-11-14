@@ -1,0 +1,14 @@
+# Ansible
+*.retry
+
+# Test-Kitchen
+**/.kitchen
+
+# Packer
+*.pem
+
+# Ruby
+*.lock
+
+# Vim
+*.swp
